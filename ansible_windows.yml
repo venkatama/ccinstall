@@ -4,6 +4,12 @@
   become: false
   gather_facts: true
   tasks:
+    - name: setting facts 
+      set_fact:
+        customerName: "citrix"
+        clientId: "Client123"
+        clientSecret: "secret1234"
+        resourceLocationId: "EMEIA"
     - name: test connection
       win_ping:
 
@@ -17,6 +23,11 @@
       args:
         chdir: c:\users\ansible
       register: homedir
-      
+
     - name: debugging script result
       debug: var=homedir
+    
+    - name: write json file
+      copy:
+        content: "{{ lookup('template', 'templates/config.j2') }}"
+        dest: 'config.json'
