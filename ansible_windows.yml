@@ -28,7 +28,7 @@
     - name: executing powershell script
       win_shell: c:\users\ansible\setup\get-items.ps1
       args:
-        chdir: c:\users\ansible
+        chdir: c:\users\ansible\setup\
       register: homedir
 
     - name: debugging script result
