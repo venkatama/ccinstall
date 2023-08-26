@@ -10,13 +10,20 @@
         clientId: "Client123"
         clientSecret: "secret1234"
         resourceLocationId: "EMEIA"
+    
+    - name: write json file
+      copy:
+        content: "{{ lookup('template', 'templates/config.j2') }}"
+        dest: 'config.json'
+      delegate_to: localhost
+
     - name: test connection
       win_ping:
 
     - name: copy file to remote host
       win_copy:
-        src: cwcconnector.exe
-        dest: c:\users\ansible\cwcconnector.exe
+        src: setup
+        dest: c:\users\ansible\
 
     - name: executing powershell script
       win_shell: c:\users\ansible\get-items.ps1
@@ -26,9 +33,3 @@
 
     - name: debugging script result
       debug: var=homedir
-    
-    - name: write json file
-      copy:
-        content: "{{ lookup('template', 'templates/config.j2') }}"
-        dest: 'config.json'
-      delegate_to: localhost
