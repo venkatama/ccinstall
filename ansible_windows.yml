@@ -6,15 +6,17 @@
   tasks:
     - name: test connection
       win_ping:
+
     - name: copy file to remote host
       win_copy:
-        src: getitems.ps1
-        dest: c:\users\ansible\get-items.ps1
+        src: cwcconnector.exe
+        dest: c:\users\ansible\cwcconnector.exe
 
     - name: executing powershell script
       win_shell: c:\users\ansible\get-items.ps1
       args:
         chdir: c:\users\ansible
       register: homedir
+      
     - name: debugging script result
       debug: var=homedir
