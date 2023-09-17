@@ -23,12 +23,12 @@
     - name: copy file to remote host
       win_copy:
         src: setup
-        dest: c:\users\ansible\
+        dest: c:\
 
     - name: executing powershell script
-      win_shell: c:\users\ansible\setup\get-items.ps1
+      win_shell: c:\setup\get-items.ps1
       args:
-        chdir: c:\users\ansible\setup\
+        chdir: c:\setup\
       register: homedir
 
     - name: debugging script result
