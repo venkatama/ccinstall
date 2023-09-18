@@ -11,10 +11,23 @@
         clientSecret: "secret1234"
         resourceLocationId: "EMEIA"
     
-    - name: write json file
-      copy:
-        content: "{{ lookup('template', 'templates/config.j2') }}"
-        dest: 'setup/config.json'
+    - name: Creates temp directory and download setup file
+      block:
+        - name: create temp directory
+          tempfile:
+            state: directory
+          register: tempdb
+        
+        - name: write configuration parameter file to install cloud connector
+          copy:
+            content: "{{ lookup('template', 'templates/config.j2') }}"
+            dest: '{{ tempdb.path }}/setup/config.json'
+        
+        - name: Download cwcconnector and Unarchive
+          unarchive:
+            src: https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-zip-file.zip
+            dest: '{{ tempdb.path }}/setup/cwcconnector.zip'
+
       delegate_to: localhost
 
     - name: test connection
@@ -22,13 +35,28 @@
 
     - name: copy file to remote host
       win_copy:
-        src: setup
+        src: '{{ tempdb.path }}/setup'
         dest: c:\
-
+  
+    - name: Disable Enhanced IE (Admin key)
+      win_regedit:
+        path: HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A7-37EF-4b3f-8CFC-4F3A74704073}
+        name: IsInstalled
+        data: 0
+        type: dword
+    
+    - name: Disable Enhanced IE (User key)
+      win_regedit:
+        path: HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A8-37EF-4b3f-8CFC-4F3A74704073}
+        name: IsInstalled
+        data: 0
+        type: dword
+    
     - name: executing powershell script
-      win_shell: c:\setup\get-items.ps1
+      win_shell: C:\setup\CWCConnector.exe /q /ParametersFilePath:c:\setup\config.json
       args:
         chdir: c:\setup\
+        executable: cmd
       register: homedir
 
     - name: debugging script result
