@@ -31,7 +31,7 @@
         - name: Download cwcconnector and Unarchive
           unarchive:
             src: https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-zip-file.zip
-            dest: '{{ tempdb.path }}/setup/cwcconnector.zip'
+            dest: '{{ tempdb.path }}/setup'
             remote_src: true
 
       delegate_to: localhost
@@ -59,7 +59,8 @@
         type: dword
     
     - name: executing powershell script
-      win_shell: C:\setup\CWCConnector.exe /q /ParametersFilePath:c:\setup\config.json
+      win_shell: gc c:\setup\sample
+      #C:\setup\CWCConnector.exe /q /ParametersFilePath:c:\setup\config.json
       args:
         chdir: c:\setup\
         executable: cmd
