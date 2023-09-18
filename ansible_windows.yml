@@ -62,10 +62,10 @@
       args:
         chdir: c:\setup\
         executable: cmd
-      register: homedir
+      register: shell_output
 
     - name: debugging script result
-      debug: var=homedir
+      debug: var=shell_output
     
     - name: Remove setup folder from the machine
       win_file:
