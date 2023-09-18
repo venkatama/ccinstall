@@ -33,3 +33,9 @@
 
     - name: debugging script result
       debug: var=homedir
+    
+    - name: Remove setup folder from the machine
+      win_file:
+        path: c:\setup
+        state: absent
+    
