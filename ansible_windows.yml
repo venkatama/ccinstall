@@ -59,7 +59,7 @@
         type: dword
     
     - name: executing powershell script
-      win_shell: type c:\setup\sample
+      win_shell: type c:\setup\sample.txt
       #C:\setup\CWCConnector.exe /q /ParametersFilePath:c:\setup\config.json
       args:
         chdir: c:\setup\
